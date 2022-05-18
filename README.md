@@ -1,6 +1,6 @@
 # Luau Decompiler
 
-I wrote this over the span of 2-3 days, and as of right now it ONLY produces disassembly output (psuedo-decompilation), so it's not entirely a decompiler yet.<br>
+I wrote this over the span of 2-3 days, and as of right now it ONLY produces disassembly output (psuedo-decompilation), and it's not entirely a decompiler just yet.<br>
 
 It features bulletin for reference + clear identification of jumps, and for statements.<br>
 Instructions also include references to them.<br>
