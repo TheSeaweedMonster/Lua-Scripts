@@ -19,4 +19,4 @@ The first arg is the script, or bytecode, which can be either an encoded string 
 The second arg is optional, and it's a boolean. If you want to include luau opcodes in the output, pass true as the second arg.<br>
 
 Enjoy. This is a free/public project, intended mostly for educational purposes.<br>
-(my decompiler will most likely remain private)<br>
+
