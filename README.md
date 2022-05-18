@@ -5,7 +5,7 @@ I wrote this over the span of 2-3 days, and as of right now it ONLY produces dis
 It features bulletin for reference + clear identification of jumps, and for statements.
 Instructions also include references to them.
 
-Although it does not have scope control, it does support function scopes.
+Although it does not have scope control, it naturally supports function scopes.
 
 Credits are much appreciated, though I don't include them in the script.
 I ONLY require that you don't claim originality, or say that it was written by yourself.
