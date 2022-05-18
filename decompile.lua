@@ -262,11 +262,11 @@ luau.GETARG_sAx = function(i) return bit32.rshift(i, 8) end
 luau.GET_OPCODE = function(i) return bit32.band(bit32.rshift(i, luau.POS_OP), luau.MASK1(luau.SIZE_OP, 0)) end
 
 local function disassemble(a1, showOps)
-	if (typeof(a1):lower() == "instance") then
-		if not getscriptbytecode then error("Executor does not support getscriptbytecode") end
-		a1 = getscriptbytecode(a1);
-	end
-	
+    if (typeof(a1):lower() == "instance") then
+        if not getscriptbytecode then error("Executor does not support getscriptbytecode") end
+        a1 = getscriptbytecode(a1);
+    end
+    
     if type(a1) == "table" then
         -- I just prefer bytecode strings
         local t = a1;
@@ -300,7 +300,7 @@ local function disassemble(a1, showOps)
             output = output .. string.rep("    ", depth)
         end
         
-		-- using function name (this will be removed & done outside of readProto)
+        -- using function name (this will be removed & done outside of readProto)
         if proto.source then
             output = output .. proto.source .. " = function("
         else
