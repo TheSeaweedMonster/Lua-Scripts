@@ -15,7 +15,7 @@ Before I move onto scope/flow control, it's important to note that a disassemble
 This script produces 2 local functions, disassemble and decompile.<br>
 As of right now, "decompile" is set to the disassemble function, mainly for DexV2 and other scripts that support a "decompile" function.<br>
 
-The first arg is the script, or bytecode, which can be either an encoded string or a byte table.\n
+The first arg is the script, or bytecode, which can be either an encoded string or a byte table.<br>
 The second arg is optional, and it's a boolean. If you want to include luau opcodes in the output, pass true as the second arg.<br>
 
 Enjoy. This is a free/public project for use in any executor.<br>
