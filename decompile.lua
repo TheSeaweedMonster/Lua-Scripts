@@ -1,4 +1,4 @@
-function deserialize(bytecode)
+local function deserialize(bytecode)
     local reader do
         reader = {}
         pos = 1
@@ -145,7 +145,7 @@ function deserialize(bytecode)
     end
 end
 
-function getluauoptable()
+local function getluauoptable()
     return {
         -- I could use case multiplier, but that 100% depends on how accurate
         -- our ordering of the opcodes are -- if we enjoy ripping off the Luau source
@@ -230,7 +230,7 @@ function getluauoptable()
     };
 end
 
-luau = {};
+local luau = {};
 luau.SIZE_A = 8
 luau.SIZE_C = 8
 luau.SIZE_B = 8
@@ -261,7 +261,12 @@ luau.GETARG_sBx = function(i) local Bx = luau.GETARG_Bx(i) local sBx = Bx + 1; i
 luau.GETARG_sAx = function(i) return bit32.rshift(i, 8) end
 luau.GET_OPCODE = function(i) return bit32.band(bit32.rshift(i, luau.POS_OP), luau.MASK1(luau.SIZE_OP, 0)) end
 
-function disassemble(a1, showOps)
+local function disassemble(a1, showOps)
+	if (typeof(a1):lower() == "instance") then
+		if not getscriptbytecode then error("Executor does not support getscriptbytecode") end
+		a1 = getscriptbytecode(a1);
+	end
+	
     if type(a1) == "table" then
         -- I just prefer bytecode strings
         local t = a1;
@@ -285,8 +290,7 @@ function disassemble(a1, showOps)
     end
 
     mainProto.source = "main"
-    
-    mainScope = {};
+    mainScope = {}; -- scope control, coming soon
     
     
     local function readProto(proto, depth)
@@ -296,6 +300,7 @@ function disassemble(a1, showOps)
             output = output .. string.rep("    ", depth)
         end
         
+		-- using function name (this will be removed & done outside of readProto)
         if proto.source then
             output = output .. proto.source .. " = function("
         else
@@ -330,7 +335,6 @@ function disassemble(a1, showOps)
         local markedAux = false
         local codeIndex = 1
         while codeIndex < proto.sizeCode do
-            -- get information about the instruction
             local i = proto.codeTable[codeIndex]
             local opc = luau.GET_OPCODE(i)
             local A = luau.GETARG_A(i)
@@ -425,7 +429,7 @@ function disassemble(a1, showOps)
                 --[[ TO-DO: we could make getOpCode faster by using the opcode
                 numbers directly, or just getting it by table index and the 
                 case-to-opcode multiplier (op * 227)
-                but I personally think this runs just fine
+                but tbh this runs just fine
                 ]]
                 if opc == getOpCode("LOADNIL") then
                     output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = nil", A)
@@ -788,10 +792,6 @@ function disassemble(a1, showOps)
     return output
 end
 
-decompile = function(scr) return disassemble(getscriptbytecode(scr), false) end
-
-
-print(decompile(game.Players.LocalPlayer.Character.Animate))
-
+local decompile = disassemble;
 
 
