@@ -257,16 +257,7 @@ luau.GETARG_A = function(i) return bit32.band(bit32.rshift(i, luau.POS_A), luau.
 luau.GETARG_B = function(i) return bit32.band(bit32.rshift(i, luau.POS_B), luau.MASK1(luau.SIZE_B, 0)) end
 luau.GETARG_C = function(i) return bit32.band(bit32.rshift(i, luau.POS_C), luau.MASK1(luau.SIZE_C, 0)) end
 luau.GETARG_Bx = function(i) return bit32.band(bit32.rshift(i, luau.POS_Bx), luau.MASK1(luau.SIZE_Bx, 0)) end
---luau.GETARG_sBx = function(i) return bit32.band((luau.GETARG_Bx(i) - luau.MAXARG_sBx), 0x7FFF) end
-luau.GETARG_sBx = function(i)
-    local Bx = luau.GETARG_Bx(i);
-    local sBx = Bx + 1;
-    if Bx > 0x7FFF and Bx <= 0xFFFF then
-        sBx = -(0xFFFF - Bx);
-        sBx = sBx - 1;
-    end
-    return sBx;
-end
+luau.GETARG_sBx = function(i) local Bx = luau.GETARG_Bx(i) local sBx = Bx + 1; if Bx > 0x7FFF and Bx <= 0xFFFF then sBx = -(0xFFFF - Bx); sBx = sBx - 1; end return sBx end
 luau.GETARG_sAx = function(i) return bit32.rshift(i, 8) end
 luau.GET_OPCODE = function(i) return bit32.band(bit32.rshift(i, luau.POS_OP), luau.MASK1(luau.SIZE_OP, 0)) end
 
