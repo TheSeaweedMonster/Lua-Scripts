@@ -7,15 +7,16 @@ Instructions also include references to them.
 
 Although it does not have scope control, it naturally supports function scopes.
 
-Credits are much appreciated, though I don't include them in the script.
+Credits are much appreciated, though I don't require them.
 I ONLY require that you don't claim originality, or say that it was written by yourself.
 
-Before I move onto scope/flow control, it's important that I make a disassembler that is fully capable first, supporting all opcodes, with full readability, so that even if the decompiler does not produce the expected output, there will be an option for disassembly. Because, decompilers will always be far from perfect and should never be expected to produce perfect output.
+Before I move onto scope/flow control, it's important to note that a disassembler of some degree is needed to be fully capable and readable first, supporting all opcodes, so that even if the decompiler does not produce the expected output, there will be an option for disassembly. Because,  as you may know, decompilers will always be far from perfect and can never be expected to produce perfect output.
 
 This script produces 2 local functions, disassemble and decompile.
-As of right now, decompile is set to disassemble.
+As of right now, "decompile" is set to the disassemble function, mainly for DexV2 and other scripts that support a "decompile" function.
 
-If you want to include luau opcodes in the output, pass "true" as the second argument to the disassemble function.
+The first arg is the script, or bytecode, which can be either an encoded string or a byte table.
+The second arg is optional, and it's a boolean. If you want to include luau opcodes in the output, pass true as the second arg.
 
-Enjoy! This is a free/public project for use in any executor.
-(my decompiler will remain private for some time)
+Enjoy. This is a free/public project for use in any executor.
+(my decompiler will most likely remain private)
