@@ -3,7 +3,8 @@
 I wrote this over the span of 2-3 days, and as of right now it ONLY produces disassembly output (psuedo-decompilation), so it's not entirely a decompiler yet.
 
 It features bulletin for reference + clear identification of jumps, and for statements.
-Instructions also include jump references.
+Instructions also include references to them.
+
 Although it does not have scope control, it does support function scopes.
 
 Credits are much appreciated, though I don't include them in the script.
