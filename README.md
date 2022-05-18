@@ -18,5 +18,5 @@ As of right now, "decompile" is set to the disassemble function, mainly for DexV
 The first arg is the script, or bytecode, which can be either an encoded string or a byte table.<br>
 The second arg is optional, and it's a boolean. If you want to include luau opcodes in the output, pass true as the second arg.<br>
 
-Enjoy. This is a free/public project, intended mostly for educational purposes.<br>
-
+This is a free/public project, intended mostly for educational purposes.<br>
+Enjoy
