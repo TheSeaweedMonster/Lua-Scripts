@@ -147,9 +147,9 @@ end
 
 local function getluauoptable()
     return {
-        -- I could use case multiplier, but that 100% depends on how accurate
-        -- our ordering of the opcodes are -- if we enjoy ripping off the Luau source
-        -- then its easy
+        -- I could use case multiplier, but that depends only on how accurate
+        -- our ordering of the opcodes are -- so if we really want to rip from
+        -- the Luau source then sure
         { ["name"] = "NOP", ["type"] = "none", ["case"] = 0, ["number"] = 0x00 },
         { ["name"] = "BREAK", ["type"] = "none", ["case"] = 1, ["number"] = 0xE3 },
         { ["name"] = "LOADNIL", ["type"] = "iA", ["case"] = 2, ["number"] = 0xC6 },
