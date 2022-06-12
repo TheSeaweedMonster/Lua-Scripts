@@ -20,3 +20,10 @@ The second arg is optional, and it's a boolean. If you want to include luau opco
 
 This is a free/public project, intended for educational purposes.<br>
 Enjoy
+
+
+
+# Change Log
+
+- 6/12/22 -
+I removed the line `local decompile = disassemble`, so it is up to you to choose wheter to set this as the default decompilation method
