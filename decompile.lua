@@ -792,6 +792,3 @@ local function disassemble(a1, showOps)
     return output
 end
 
-local decompile = disassemble;
-
-
