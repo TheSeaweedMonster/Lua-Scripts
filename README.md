@@ -26,4 +26,4 @@ Enjoy
 # Change Log
 
 - 6/12/22 -
-I removed the line `local decompile = disassemble`, so it is up to you to choose wheter to set this as the default decompilation method
+I removed the line `local decompile = disassemble`, so it is up to you to choose whether to set this as the default decompilation method
