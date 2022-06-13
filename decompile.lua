@@ -787,8 +787,9 @@ local function disassemble(a1, showOps)
     end
     
     local startDepth = 0;
-    output = output .. readProto(mainProto, startDepth);
+    output = output .. readProto(mainProto, startDepth)
     
     return output
 end
 
+return disassemble
