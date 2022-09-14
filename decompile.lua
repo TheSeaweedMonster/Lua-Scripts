@@ -52,7 +52,7 @@ local function deserialize(bytecode)
     end
 
     local status = reader:nextByte()
-    if (status == 1 or status == 2) then
+    if (status ~= 0) then
         local protoTable = {}
         local stringTable = {}
         
