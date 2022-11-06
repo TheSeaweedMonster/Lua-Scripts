@@ -10,7 +10,7 @@ Although it does not have scope control, it naturally supports function scopes.<
 Credits are much appreciated, though I don't require them.<br>
 I ONLY require that you don't claim originality for writing it<br>
 
-Before I move onto scope/flow control, it's important to note that a disassembler of some degree is needed to be fully capable first, and so even if the decompiler doesn't produce the output expected, there will be an option for disassembly<br>
+Before I move onto scope/flow control, it's important that a disassembler of some degree is made anyways, so even if decompiling doesn't produce the output expected, there will be an option for basic disassembly<br>
 
 This script produces 2 local functions, disassemble and decompile.<br>
 As of right now, "decompile" is set to the disassemble function, mainly for DexV2 and other scripts that support a "decompile" function.<br>
