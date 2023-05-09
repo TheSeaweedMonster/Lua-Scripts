@@ -1,5 +1,5 @@
 appversion=0.100
-appurl=""
+appurl="https://raw.githubusercontent.com/TheSeaweedMonster/Celery/main/CeleryApp_DL.zip"
 whitelist=true
 uwpoffurl="https://raw.githubusercontent.com/TheSeaweedMonster/Celery/main/uwpoff.bin"
 uwpiniturl="https://raw.githubusercontent.com/TheSeaweedMonster/Celery/main/uwpinit.lua"
