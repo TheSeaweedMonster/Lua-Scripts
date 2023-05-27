@@ -601,10 +601,10 @@ local function disassemble(a1, showOps)
                     local k = proto.kTable[C + 1] or nilValue;
                     output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i / %s", A, B, tostring(k.value));
                 elseif opc == getOpCode("MOD") then
-                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i % var%i", A, B, C);
+                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i %% var%i", A, B, C);
                 elseif opc == getOpCode("MODK") then
                     local k = proto.kTable[C + 1] or nilValue;
-                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i % %s", A, B, tostring(k.value));
+                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i %% %s", A, B, tostring(k.value));
                 elseif opc == getOpCode("POW") then
                     output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i ^ var%i", A, B, C);
                 elseif opc == getOpCode("POWK") then
