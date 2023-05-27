@@ -634,6 +634,7 @@ local function disassemble(a1, showOps)
                         if nameCall then
                             for j = 1, B - 2 do
                                 output = output .. string.format("var%i", A + 1 + j) -- exclude self
+                                if j < B - 2 then output = output .. ", " end
                             end
                         else
                             for j = 1, B - 1 do
