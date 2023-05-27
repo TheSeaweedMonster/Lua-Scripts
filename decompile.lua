@@ -767,7 +767,7 @@ local function disassemble(a1, showOps)
                         output = output .. " -- referenced by "
                         for j = 1,#v.refs do
                             output = output .. "#" .. v.refs[j]
-                            if j < #v.refs - 1 then
+                            if j < #v.refs then
                                 output = output .. ", "
                             end
                         end
