@@ -601,10 +601,10 @@ local function disassemble(a1, showOps)
                     local k = proto.kTable[C + 1] or nilValue;
                     output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i / %s", A, B, tostring(k.value));
                 elseif opc == getOpCode("MOD") then
-                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i % var%i", A, B, C);
+                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i %% var%i", A, B, C);
                 elseif opc == getOpCode("MODK") then
                     local k = proto.kTable[C + 1] or nilValue;
-                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i % %s", A, B, tostring(k.value));
+                    output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i %% %s", A, B, tostring(k.value));
                 elseif opc == getOpCode("POW") then
                     output = output .. (isVarDefined(A) and "" or "local ") .. string.format("var%i = var%i ^ var%i", A, B, C);
                 elseif opc == getOpCode("POWK") then
@@ -634,6 +634,7 @@ local function disassemble(a1, showOps)
                         if nameCall then
                             for j = 1, B - 2 do
                                 output = output .. string.format("var%i", A + 1 + j) -- exclude self
+                                if j < B - 2 then output = output .. ", " end
                             end
                         else
                             for j = 1, B - 1 do
@@ -766,7 +767,7 @@ local function disassemble(a1, showOps)
                         output = output .. " -- referenced by "
                         for j = 1,#v.refs do
                             output = output .. "#" .. v.refs[j]
-                            if j < #v.refs - 1 then
+                            if j < #v.refs then
                                 output = output .. ", "
                             end
                         end
