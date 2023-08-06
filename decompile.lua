@@ -78,6 +78,10 @@ local function deserialize(bytecode)
             proto.numUpValues = reader:nextByte()
             proto.isVarArg = reader:nextByte()
             
+            proto.flags = reader:nextByte()
+            proto.sizetypeinfo = reader:nextVarInt()
+            proto.typeinfo = reader:nextString()
+            
             proto.sizeCode = reader:nextVarInt()
             for j = 1,proto.sizeCode do
                 proto.codeTable[j] = reader:nextInt()
