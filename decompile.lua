@@ -26,7 +26,7 @@ local function deserialize(bytecode)
                 c1 = reader:nextByte()
                 c2 = bit32.band(c1, 0x7F)
                 r = bit32.bor(r, bit32.lshift(c2, b))
-                b += 7
+                b = b + 7
             until not bit32.btest(c1, 0x80)
             return r;
         end
@@ -55,6 +55,8 @@ local function deserialize(bytecode)
     if (status ~= 0) then
         local protoTable = {}
         local stringTable = {}
+        
+        reader:nextByte(); --[[ yeah...idk ]]
         
         local sizeStrings = reader:nextVarInt()
         for i = 1,sizeStrings do
