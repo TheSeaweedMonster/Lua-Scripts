@@ -79,7 +79,6 @@ local function deserialize(bytecode)
             proto.isVarArg = reader:nextByte()
             
             proto.flags = reader:nextByte()
-            proto.sizetypeinfo = reader:nextVarInt()
             proto.typeinfo = reader:nextString()
             
             proto.sizeCode = reader:nextVarInt()
