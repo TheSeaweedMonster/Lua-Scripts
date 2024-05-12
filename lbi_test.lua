@@ -5612,7 +5612,7 @@ rawset(script_env, "isluau", isluau)
 rawset(script_env, "getrenv", getrenv)
 rawset(script_env, "getgenv", getgenv)
 rawset(script_env, "hookfunction", hookfunction)
-
+ 
 function load_string(str,env)
     str = "loadstring = load_string\n" .. str
     str = str:gsub("game:HttpGet", "httpget")
