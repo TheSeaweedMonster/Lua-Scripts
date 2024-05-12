@@ -5614,6 +5614,7 @@ rawset(script_env, "getgenv", getgenv)
 rawset(script_env, "hookfunction", hookfunction)
 
 function load_string(str,env)
+    str = "loadstring = load_string\n" .. str
     str = str:gsub("game:HttpGet", "httpget")
     str = str:gsub("Game:HttpGet", "httpget")
     str = str:gsub("game.HttpGet", "httpget")
