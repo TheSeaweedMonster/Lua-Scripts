@@ -5599,7 +5599,7 @@ function getgenv() return getfenv() end
 function hookfunction(a1, a2) local old = a1; a1 = a2; return old end --[[ LMAO ]]
 
 --getfenv(0).script = Instance.new("LocalScript")
-script_env = getfenv(0);
+script_env = senv;
 rawset(script_env, "script_env", script_env)
 rawset(script_env, "_G", _G or {})
 rawset(script_env, "shared", shared or {})
@@ -5637,9 +5637,9 @@ function load_string(str,env)
 
 	if ran then
 		--print("Success!");
-		return f,buff.data
+		return f, buff.data
 	else
-		warn("[load_string]: Failed");
+		warn("[loadstring]:", f, buff.data);
 		-- error handling here I guess
 		return nil,error
 	end
