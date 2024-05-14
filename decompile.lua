@@ -56,7 +56,7 @@ local function deserialize(bytecode)
         local protoTable = {}
         local stringTable = {}
         
-        reader:nextByte(); --[[ yeah...idk ]]
+        reader:nextByte();
         
         local sizeStrings = reader:nextVarInt()
         for i = 1,sizeStrings do
@@ -82,7 +82,7 @@ local function deserialize(bytecode)
             
             if (status == 4) then
                 proto.flags = reader:nextByte()
-                proto.typeinfo = reader:nextString()
+                proto.typeinfo = reader:nextVarInt()
             end
             
             proto.sizeCode = reader:nextVarInt()
