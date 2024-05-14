@@ -51,8 +51,8 @@ local function deserialize(bytecode)
         end
     end
 
-    local status = reader:nextByte()
-    if (status ~= 0) then
+    local bytecode_version = reader:nextByte()
+    if (bytecode_version ~= 0) then
         local protoTable = {}
         local stringTable = {}
         
@@ -80,7 +80,7 @@ local function deserialize(bytecode)
             proto.numUpValues = reader:nextByte()
             proto.isVarArg = reader:nextByte()
             
-            if (status == 4) then
+            if (bytecode_version >= 4) then
                 proto.flags = reader:nextByte()
                 proto.typeinfo = reader:nextVarInt()
             end
@@ -147,7 +147,7 @@ local function deserialize(bytecode)
         local mainProtoId = reader:nextVarInt()
         return protoTable[mainProtoId + 1], protoTable, stringTable;
     else
-        error(string.format("Invalid bytecode (version: %i)", status))
+        error(string.format("Invalid bytecode (version: %i)", bytecode_version))
         return nil;
     end
 end
