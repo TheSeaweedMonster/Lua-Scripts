@@ -82,7 +82,7 @@ local function deserialize(bytecode)
             
             if (bytecode_version >= 4) then
                 proto.flags = reader:nextByte()
-                proto.typeinfo = reader:nextVarInt()
+                proto.typeinfo = reader:nextString()
             end
             
             proto.sizeCode = reader:nextVarInt()
