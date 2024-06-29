@@ -543,18 +543,13 @@ return function(first)
                         local propsDefault = {
                             ["Terrain"] = {
                                 ["MaterialColors"] = function()
-                                    return [===[<![CDATA[AAAAAAAAan8/P39rf2Y/ilY+j35fi21PZmxvZbDqw8faiVpHOi4kHh4lZlw76JxKc3trhHta
-                                    gcLgc4RKxr21zq2UlJSM]]]===]
+                                    return ""
                                 end,
                                 ["PhysicsGrid"] = function()
-                                    --return [===[<![CDATA[AgMAAAAE/wAA/wAA/wAA/gAAAAAAAAAAAAAAAAABAAD/AAD/AAD/AQD/AAAAAAAAAAAAAAAB
-                                    --AAAAAAAAAAA=]]]===]
+                                    return ""
                                 end,
                                 ["SmoothGrid"] = function()
-                                    local region = object:CopyRegion(object.MaxExtents);
-                                    print(region.SizeInCells);
-                                    --return [===[<![CDATA[AgMAAAAE/wAA/wAA/wAA/gAAAAAAAAAAAAAAAAABAAD/AAD/AAD/AQD/AAAAAAAAAAAAAAAB
-                                    --AAAAAAAAAAA=]]]===]
+                                    return ""
                                 end
                             }
                         }
