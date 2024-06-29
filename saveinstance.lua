@@ -346,6 +346,9 @@ return function(first)
     end
     
     local function serialize(object, depth)
+	if (object.ClassName == "Terrain") then
+	    return "" -- not ready yet
+	end
         if (object.ClassName == "DataModel") then
             local xml = "";
             local scan = { "Workspace", "Lighting", "Players", "ReplicatedFirst", "ReplicatedStorage", "StarterGui", "StarterPack", "StarterPlayer" };
