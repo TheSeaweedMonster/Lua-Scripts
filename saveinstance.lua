@@ -783,7 +783,3 @@ return function(first)
     
     return headerStart .. serialize(first, 1) .. headerEnd;
 end
-    
-function saveplace()
-    return saveinstance(game)
-end
