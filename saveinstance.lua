@@ -108,7 +108,7 @@ return function(first)
                 -- We can safely assume t contains a Properties table
                 -- since there had to be a Class before it
                 local found = false
-                for k,v in ipairs(t.Properties) do
+                for k,v in pairs(t.Properties) do
                     if k:lower() == propertyname:lower() then
                         found = true
                         break
@@ -346,9 +346,6 @@ return function(first)
     end
     
     local function serialize(object, depth)
-        if (object.ClassName == "Terrain") then
-            return "" -- not ready yet
-        end
         if (object.ClassName == "DataModel") then
             local xml = "";
             local scan = { "Workspace", "Lighting", "Players", "ReplicatedFirst", "ReplicatedStorage", "StarterGui", "StarterPack", "StarterPlayer" };
@@ -539,20 +536,25 @@ return function(first)
                             ["Vector3"] = {
                                 ["X"] = 0,
                                 ["Y"] = 0,
-                                ["Z"] = 0,
+                                ["Z"] = 0
                             }
                         }
                         
                         local propsDefault = {
                             ["Terrain"] = {
                                 ["MaterialColors"] = function()
-                                    return ""
+                                    return [===[<![CDATA[AAAAAAAAan8/P39rf2Y/ilY+j35fi21PZmxvZbDqw8faiVpHOi4kHh4lZlw76JxKc3trhHta
+                                    gcLgc4RKxr21zq2UlJSM]]]===]
                                 end,
                                 ["PhysicsGrid"] = function()
-                                    return ""
+                                    --return [===[<![CDATA[AgMAAAAE/wAA/wAA/wAA/gAAAAAAAAAAAAAAAAABAAD/AAD/AAD/AQD/AAAAAAAAAAAAAAAB
+                                    --AAAAAAAAAAA=]]]===]
                                 end,
                                 ["SmoothGrid"] = function()
-                                    return ""
+                                    local region = object:CopyRegion(object.MaxExtents);
+                                    print(region.SizeInCells);
+                                    --return [===[<![CDATA[AgMAAAAE/wAA/wAA/wAA/gAAAAAAAAAAAAAAAAABAAD/AAD/AAD/AQD/AAAAAAAAAAAAAAAB
+                                    --AAAAAAAAAAA=]]]===]
                                 end
                             }
                         }
@@ -722,8 +724,7 @@ return function(first)
                             if typesDefault[proptype] then
                                 local isDefault = true
                                 for k,v in pairs(typesDefault[proptype]) do
-                                    --print("is " ..propname.. "." ..k.. ", ", prop[k], " == " .. v .. "?")
-                                    -- ie. prop["X"] == v (or, defaultPropValue["X"])
+									-- ie. prop["X"] == v (or, defaultPropValue["X"])
                                     if prop[k] ~= v then
                                         isDefault = false
                                         break
