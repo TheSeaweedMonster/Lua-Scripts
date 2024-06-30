@@ -346,9 +346,9 @@ return function(first)
     end
     
     local function serialize(object, depth)
-		if (object.ClassName == "Terrain") then
-			return "" -- not ready yet
-		end
+        if (object.ClassName == "Terrain") then
+            return "" -- not ready yet
+        end
         if (object.ClassName == "DataModel") then
             local xml = "";
             local scan = { "Workspace", "Lighting", "Players", "ReplicatedFirst", "ReplicatedStorage", "StarterGui", "StarterPack", "StarterPlayer" };
@@ -721,8 +721,9 @@ return function(first)
                             local shouldSet = true
                             if typesDefault[proptype] then
                                 local isDefault = true
-                                for k,v in ipairs(typesDefault[proptype]) do
-									-- ie. prop["X"] == v (or, defaultPropValue["X"])
+                                for k,v in pairs(typesDefault[proptype]) do
+                                    --print("is " ..propname.. "." ..k.. ", ", prop[k], " == " .. v .. "?")
+                                    -- ie. prop["X"] == v (or, defaultPropValue["X"])
                                     if prop[k] ~= v then
                                         isDefault = false
                                         break
