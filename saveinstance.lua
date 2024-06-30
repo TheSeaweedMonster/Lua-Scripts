@@ -346,6 +346,9 @@ return function(first)
     end
     
     local function serialize(object, depth)
+		if (object.ClassName == "Terrain") then
+			return "" -- not ready yet
+		end
         if (object.ClassName == "DataModel") then
             local xml = "";
             local scan = { "Workspace", "Lighting", "Players", "ReplicatedFirst", "ReplicatedStorage", "StarterGui", "StarterPack", "StarterPlayer" };
@@ -379,9 +382,14 @@ return function(first)
 
         local metadata = rbxapi[object.ClassName];
         if metadata == nil then
-            error("Properties not found for class " .. object.ClassName)
+            --warn("Properties not found for class " .. object.ClassName)
             return ""
-        else
+		end
+
+		if metadata.Properties == nil then
+            --warn("Properties not found for class " .. object.ClassName)
+            return ""
+		else
             local properties = metadata.Properties
             local xml = "";
             local suid = generatesuid(object);
@@ -543,18 +551,13 @@ return function(first)
                         local propsDefault = {
                             ["Terrain"] = {
                                 ["MaterialColors"] = function()
-                                    return [===[<![CDATA[AAAAAAAAan8/P39rf2Y/ilY+j35fi21PZmxvZbDqw8faiVpHOi4kHh4lZlw76JxKc3trhHta
-                                    gcLgc4RKxr21zq2UlJSM]]]===]
+                                    return ""
                                 end,
                                 ["PhysicsGrid"] = function()
-                                    --return [===[<![CDATA[AgMAAAAE/wAA/wAA/wAA/gAAAAAAAAAAAAAAAAABAAD/AAD/AAD/AQD/AAAAAAAAAAAAAAAB
-                                    --AAAAAAAAAAA=]]]===]
+                                    return ""
                                 end,
                                 ["SmoothGrid"] = function()
-                                    local region = object:CopyRegion(object.MaxExtents);
-                                    print(region.SizeInCells);
-                                    --return [===[<![CDATA[AgMAAAAE/wAA/wAA/wAA/gAAAAAAAAAAAAAAAAABAAD/AAD/AAD/AQD/AAAAAAAAAAAAAAAB
-                                    --AAAAAAAAAAA=]]]===]
+                                    return ""
                                 end
                             }
                         }
@@ -587,7 +590,7 @@ return function(first)
                             end,
                             ["ColorSequence"] = function(p)
                                 local res = ""
-                                for _,v in pairs(p.Keypoints) do
+                                for _,v in pairs(p.Keypoints or {}) do
                                     res = res .. table.concat({tostring(v.Time), tostring(v.Value.R), tostring(v.Value.G), tostring(v.Value.B)}, ' ') .. " 0 "
                                 end
                                 return res
@@ -634,7 +637,7 @@ return function(first)
                             end,
                             ["NumberSequence"] = function(p)
                                 local res = ""
-                                for _,v in pairs(p.Keypoints) do
+                                for _,v in pairs(p.Keypoints or {}) do
                                     res = res .. table.concat({tostring(v.Time), tostring(v.Value), tostring(v.Envelope)}, ' ') .. ' '
                                 end
                                 return res
@@ -719,11 +722,12 @@ return function(first)
                             end
                         }
 
-                        xpcall(function()
+                        --xpcall(function()
                             local shouldSet = true
                             if typesDefault[proptype] then
                                 local isDefault = true
                                 for k,v in pairs(typesDefault[proptype]) do
+									--print("is " ..propname.. "." ..k.. ", ", prop[k], " == " .. v .. "?")
 									-- ie. prop["X"] == v (or, defaultPropValue["X"])
                                     if prop[k] ~= v then
                                         isDefault = false
@@ -756,10 +760,10 @@ return function(first)
                                     end
                                 end
                             end
-                        end, function(err)
-                            warn(err)
-                            temp = ""
-                        end)
+                        --end, function(err)
+                        --    warn(err)
+                        --    temp = ""
+                        --end)
                         
                         return temp
                     end
