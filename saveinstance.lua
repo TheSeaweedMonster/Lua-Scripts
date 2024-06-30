@@ -11,7 +11,7 @@ return function(first)
     local function loadreflection()
         --[[ Thanks MaximumADHD! ]]
         local raw = httpget("https://raw.githubusercontent.com/MaximumADHD/Roblox-Client-Tracker/roblox/API-Dump.txt");
-	local rbxapi = {};
+        local rbxapi = {};
         local t = nil;
         local at = 1;
         local function nextkeyword()
@@ -346,9 +346,9 @@ return function(first)
     end
     
     local function serialize(object, depth)
-	if (object.ClassName == "Terrain") then
-	    return "" -- not ready yet
-	end
+		if (object.ClassName == "Terrain") then
+			return "" -- not ready yet
+		end
         if (object.ClassName == "DataModel") then
             local xml = "";
             local scan = { "Workspace", "Lighting", "Players", "ReplicatedFirst", "ReplicatedStorage", "StarterGui", "StarterPack", "StarterPlayer" };
@@ -594,7 +594,7 @@ return function(first)
                                 return (string.len(p) > 0) and ("<url>" .. tostring(p) .. "</url>") or "<null></null>"
                             end,
                             ["CoordinateFrame"] = function(p)
-                                local c = { raw:GetComponents() };
+                                local c = { p:GetComponents() };
                                 return { 
                                     ["X"] = c[1],
                                     ["Y"] = c[2],
@@ -628,7 +628,7 @@ return function(first)
                                 }
                             end,
                             ["NumberRange"] = function(p)
-                                return tostring(raw.Min) .. " " .. tostring(raw.Max)
+                                return tostring(p.Min) .. " " .. tostring(p.Max)
                             end,
                             ["NumberSequence"] = function(p)
                                 local res = ""
@@ -721,31 +721,33 @@ return function(first)
                             local shouldSet = true
                             if typesDefault[proptype] then
                                 local isDefault = true
-                                for k,v in pairs(typesDefault[proptype]) do
+                                for k,v in ipairs(typesDefault[proptype]) do
+									-- ie. prop["X"] == v (or, defaultPropValue["X"])
                                     if prop[k] ~= v then
                                         isDefault = false
                                         break
                                     end
                                 end
                                 if isDefault then
-                                    warn("Property " .. propname .. " was not set because the values were default")
+                                    --warn("Property " .. propname .. " was not set because the values were default")
                                     shouldSet = false
                                 end
                             end
                             if shouldSet then
                                 local customSet = false;
                                 if propsDefault[object.ClassName] then
-                                    local defaultValues = propsDefault[object.ClassName][propname];
-                                    if defaultValues then
-                                        for k,v in pairs(defaultValues) do
-                                            prop[k] = v;
-                                        end
-                                        warn("Set property to default hard-coded values")
+                                    local defaultValue = propsDefault[object.ClassName][propname];
+                                    if defaultValue then
+										prop = defaultValue()
+                                        --for k,v in pairs(defaultValues) do
+                                        --    prop[k] = v;
+                                        --end
+                                        --warn("Set property to default hard-coded values")
                                         customSet = true;
                                     end
                                 end
                                 if not customSet then
-                                    if not tags[proptype] then
+                                    if not descriptors[proptype] then
                                         addpropertytag(proptype, propname, descriptors["default"](prop))
                                     else
                                         addpropertytag(proptype, propname, descriptors[proptype](prop))
@@ -755,7 +757,7 @@ return function(first)
                         end, function(err)
                             warn(err)
                             temp = ""
-                        end) 
+                        end)
                         
                         return temp
                     end
