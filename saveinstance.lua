@@ -322,6 +322,7 @@ return function(first)
         return buffer.tostring(b64decode(buffer.fromstring(str)))
     end
     
+    
     local depthSpace = 4;
     local rbxapi = getreflection();
     
@@ -558,6 +559,21 @@ return function(first)
                                 end,
                                 ["SmoothGrid"] = function()
                                     return ""
+                                end
+                            },
+                            ["LocalScript"] = {
+                                ["Source"] = function()
+                                    return "<![CDATA[" .. decompile(object) .. "]]>"
+                                end
+                            },
+                            ["ModuleScript"] = {
+                                ["Source"] = function()
+                                    return "-- ModuleScript not supported"
+                                end
+                            },
+                            ["Script"] = {
+                                ["Source"] = function()
+                                    return "print'Hello, world'"
                                 end
                             }
                         }
