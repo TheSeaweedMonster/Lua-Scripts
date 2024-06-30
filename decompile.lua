@@ -51,8 +51,8 @@ local function deserialize(bytecode)
         end
     end
 
-    local bytecode_version = reader:nextByte()
-    if (bytecode_version ~= 0) then
+    local bytecodeVersion = reader:nextByte()
+    if (bytecodeVersion ~= 0) then
         local protoTable = {}
         local stringTable = {}
         
@@ -80,9 +80,9 @@ local function deserialize(bytecode)
             proto.numUpValues = reader:nextByte()
             proto.isVarArg = reader:nextByte()
             
-            if (bytecode_version >= 4) then
+            if (bytecodeVersion >= 4) then
                 proto.flags = reader:nextByte()
-                proto.typeinfo = reader:nextVarInt()
+                --proto.typeinfo = reader:nextVarInt()
             end
             
             proto.sizeCode = reader:nextVarInt()
@@ -93,8 +93,10 @@ local function deserialize(bytecode)
             proto.sizeConsts = reader:nextVarInt();
             for j = 1,proto.sizeConsts do
                 local k = {};
+                k.value = nil;
                 k.type = reader:nextByte();
-                if k.type == 1 then -- boolean
+                if k.type == 0 then -- nil
+                elseif k.type == 1 then -- boolean
                     k.value = (reader:nextByte() == 1 and true or false)
                 elseif k.type == 2 then -- number
                     k.value = reader:nextDouble()
@@ -109,7 +111,7 @@ local function deserialize(bytecode)
                     end
                 elseif k.type == 6 then -- closure
                     k.value = reader:nextVarInt() + 1 -- closure id
-                elseif k.type ~= 0 then
+                else
                     error(string.format("Unrecognized constant type: %i", k.type))
                 end
                 proto.kTable[j] = k
@@ -126,7 +128,7 @@ local function deserialize(bytecode)
             proto.source = stringTable[protoSourceId]
             
             if (reader:nextByte() == 1) then -- Has Line info?
-                local compKey = reader:nextVarInt()
+                local compKey = reader:nextByte()
                 for j = 1,proto.sizeCode do
                     proto.smallLineInfo[j] = reader:nextByte()
                 end
@@ -140,14 +142,14 @@ local function deserialize(bytecode)
             end
             
             if (reader:nextByte() == 1) then -- Has Debug info?
-                error'disassemble() can only be called on ROBLOX scripts'
+                error'debuginfo not supported'
             end
         end
         
         local mainProtoId = reader:nextVarInt()
         return protoTable[mainProtoId + 1], protoTable, stringTable;
     else
-        error(string.format("Invalid bytecode (version: %i)", bytecode_version))
+        error(string.format("Invalid bytecode (version: %i)", bytecodeVersion))
         return nil;
     end
 end
@@ -298,7 +300,6 @@ local function disassemble(a1, showOps)
 
     mainProto.source = "main"
     mainScope = {}; -- scope control, coming soon
-    
     
     local function readProto(proto, depth)
         local output = "";
