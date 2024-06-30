@@ -722,7 +722,7 @@ return function(first)
                             if typesDefault[proptype] then
                                 local isDefault = true
                                 for k,v in pairs(typesDefault[proptype]) do
-                                    if prop[k] != v then
+                                    if prop[k] ~= v then
                                         isDefault = false
                                         break
                                     end
