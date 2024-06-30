@@ -56,7 +56,7 @@ local function deserialize(bytecode)
         local protoTable = {}
         local stringTable = {}
         
-        reader:nextByte();
+        local bytecodeEncoding = reader:nextByte()
         
         local sizeStrings = reader:nextVarInt()
         for i = 1,sizeStrings do
@@ -82,7 +82,8 @@ local function deserialize(bytecode)
             
             if (bytecodeVersion >= 4) then
                 proto.flags = reader:nextByte()
-                --proto.typeinfo = reader:nextVarInt()
+                proto.typeinfo = reader:nextVarInt()
+				print(proto.typeinfo)
             end
             
             proto.sizeCode = reader:nextVarInt()
@@ -271,22 +272,17 @@ luau.GETARG_sAx = function(i) return bit32.rshift(i, 8) end
 luau.GET_OPCODE = function(i) return bit32.band(bit32.rshift(i, luau.POS_OP), luau.MASK1(luau.SIZE_OP, 0)) end
 
 local function disassemble(a1, showOps)
-    if (typeof(a1):lower() == "instance") then
+	local bcode;
+
+    if (typeof(a1) == "Instance") then
         if not getscriptbytecode then error("Executor does not support getscriptbytecode") end
-        a1 = getscriptbytecode(a1);
+        bcode = getscriptbytecode(a1);
     end
-    
-    if type(a1) == "table" then
-        -- I just prefer bytecode strings
-        local t = a1;
-        at = "";
-        for i = 1,#t do
-            a1 = a1 .. string.char(t[i]);
-        end
-    end
+
+	assert(bcode, "Failed to fetch " .. a1.ClassName .. " bytecode")
     
     local output = ""
-    local mainProto, protoTable, stringTable = deserialize(a1)
+    local mainProto, protoTable, stringTable = deserialize(bcode)
     local luauOpTable = getluauoptable();
     
     local function getOpCode(opName)
