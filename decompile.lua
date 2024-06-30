@@ -83,7 +83,10 @@ local function deserialize(bytecode)
             if (bytecodeVersion >= 4) then
                 proto.flags = reader:nextByte()
                 proto.typeinfo = reader:nextVarInt()
-				print(proto.typeinfo)
+
+				if proto.typeinfo ~= 0 then
+					error'typeinfo not implemented'
+				end
             end
             
             proto.sizeCode = reader:nextVarInt()
@@ -277,7 +280,9 @@ local function disassemble(a1, showOps)
     if (typeof(a1) == "Instance") then
         if not getscriptbytecode then error("Executor does not support getscriptbytecode") end
         bcode = getscriptbytecode(a1);
-    end
+    elseif (type(a1) == "string") then
+		bcode = a1
+	end
 
 	assert(bcode, "Failed to fetch " .. a1.ClassName .. " bytecode")
     
