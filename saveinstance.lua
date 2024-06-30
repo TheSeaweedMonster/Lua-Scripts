@@ -322,8 +322,7 @@ return function(first)
         return buffer.tostring(b64decode(buffer.fromstring(str)))
     end
     
-    
-    local depthSpace = 4;
+        local depthSpace = 4;
     local rbxapi = getreflection();
     
     local headerStart = '<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">\n' .. string.rep(' ', depthSpace) .. "<External>null</External>\n" .. string.rep(' ', depthSpace) .. "<External>nil</External>\n";
@@ -768,13 +767,13 @@ return function(first)
                                         customSet = true;
                                     end
                                 end
-                                if not customSet then
+                                --if not customSet then
                                     if not descriptors[proptype] then
                                         addpropertytag(proptype, propname, descriptors["default"](prop))
                                     else
                                         addpropertytag(proptype, propname, descriptors[proptype](prop))
                                     end
-                                end
+                                --end
                             end
                         --end, function(err)
                         --    warn(err)
