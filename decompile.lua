@@ -289,14 +289,15 @@ local function disassemble(a1, showOps)
     local output = ""
     local mainProto, protoTable, stringTable = deserialize(bcode)
     local luauOpTable = getluauoptable();
+
+    local opCodeMap = (function()
+        local opCodeMap = {}
+        for _, op in ipairs(luauOpTable) do opCodeMap[op.name] = op.number end
+        return opCodeMap
+    end)()
     
     local function getOpCode(opName)
-        for _,v in pairs(luauOpTable) do 
-            if v.name == opName then 
-                return v.number;
-            end
-        end
-        return 0;
+        return opCodeMap[opName] or 0
     end
 
     mainProto.source = "main"
