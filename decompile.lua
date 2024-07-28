@@ -2,9 +2,12 @@ local function deserialize(bytecode)
     local reader = {
         pos = 1,
         nextByte = function(self)
-            local v = bytecode:byte(self.pos, self.pos)
+            local byte = bytecode:byte(self.pos, self.pos)
+            if not byte then
+                error("Unexpected end of bytecode while reading next byte at position " .. self.pos)
+            end
             self.pos = self.pos + 1
-            return v
+            return byte
         end,
         nextChar = function(self)
             return string.char(self:nextByte())
@@ -24,12 +27,23 @@ local function deserialize(bytecode)
                 local byte = self:nextByte()
                 result = bit32.bor(result, bit32.lshift(bit32.band(byte, 0x7F), shift))
                 shift = shift + 7
+                if shift > 32 then
+                    error("VarInt too large to decode at position " .. self.pos)
+                end
             until bit32.band(byte, 0x80) == 0
             return result
         end,
         nextString = function(self)
-            local len = self:nextVarInt()
-            return bytecode:sub(self.pos, self.pos + len - 1)
+            local length = self:nextVarInt()
+            if length < 0 then
+                error("Negative length for string at position " .. self.pos)
+            end
+            local str = bytecode:sub(self.pos, self.pos + length - 1)
+            if #str ~= length then
+                error("Unexpected end of bytecode while reading string of length " .. length .. " at position " .. self.pos)
+            end
+            self.pos = self.pos + length
+            return str
         end,
         nextDouble = function(self)
             local bytes = {}
@@ -42,8 +56,7 @@ local function deserialize(bytecode)
 
     local bytecodeVersion = reader:nextByte()
     if bytecodeVersion == 0 then
-        error("Invalid bytecode (version: " .. bytecodeVersion .. ")")
-        return nil
+        error("Invalid bytecode version: " .. bytecodeVersion)
     end
 
     local protoTable, stringTable = {}, {}
@@ -63,8 +76,7 @@ local function deserialize(bytecode)
         }
     end
 
-    for i = 1, #protoTable do
-        local proto = protoTable[i]
+    for i, proto in ipairs(protoTable) do
         proto.maxStackSize = reader:nextByte()
         proto.numParams = reader:nextByte()
         proto.numUpValues = reader:nextByte()
@@ -73,7 +85,7 @@ local function deserialize(bytecode)
         if bytecodeVersion >= 4 then
             proto.flags = reader:nextByte()
             proto.typeinfo = reader:nextVarInt()
-            if proto.typeinfo ~= 0 then error'typeinfo not implemented' end
+            if proto.typeinfo ~= 0 then error("Typeinfo not implemented at prototype index " .. i) end
         end
 
         proto.sizeCode = reader:nextVarInt()
@@ -100,7 +112,7 @@ local function deserialize(bytecode)
             elseif k.type == 6 then
                 k.value = reader:nextVarInt() + 1
             elseif k.type ~= 0 then
-                error("Unrecognized constant type: " .. k.type)
+                error("Unrecognized constant type: " .. k.type .. " at constant index " .. j .. " in prototype index " .. i)
             end
             proto.kTable[j] = k
         end
@@ -124,10 +136,15 @@ local function deserialize(bytecode)
             end
         end
 
-        if reader:nextByte() == 1 then error'debuginfo not supported' end
+        if reader:nextByte() == 1 then error("Debug info not supported in prototype index " .. i) end
     end
 
-    return protoTable[reader:nextVarInt() + 1], protoTable, stringTable
+    local entryProtoIndex = reader:nextVarInt() + 1
+    if not protoTable[entryProtoIndex] then
+        error("Entry prototype index " .. entryProtoIndex .. " out of bounds in prototype table")
+    end
+
+    return protoTable[entryProtoIndex], protoTable, stringTable
 end
 
 local function getluauoptable()
